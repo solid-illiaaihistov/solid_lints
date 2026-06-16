@@ -6,6 +6,27 @@ analyzer:
     - '**/*.g.dart'
     - '**/*.gr.dart'
 
+    # Exclude unmigrated rules
+    - 'src/lints/avoid_late_keyword/**'
+    - 'src/lints/avoid_unnecessary_type_assertions/**'
+    - 'src/lints/avoid_unnecessary_type_casts/**'
+    - 'src/lints/avoid_unused_parameters/**'
+    - 'src/lints/avoid_using_api/**'
+    - 'src/lints/cyclomatic_complexity/**'
+    - 'src/lints/function_lines_of_code/**'
+    - 'src/lints/member_ordering/**'
+    - 'src/lints/named_parameters_ordering/**'
+    - 'src/lints/no_empty_block/**'
+    - 'src/lints/no_magic_number/**'
+    - 'src/lints/number_of_parameters/**'
+    - 'src/lints/prefer_conditional_expressions/**'
+    - 'src/lints/prefer_first/**'
+    - 'src/lints/prefer_last/**'
+    - 'src/lints/prefer_match_file_name/**'
+    - 'src/models/solid_lint_rule.dart'
+    - 'src/utils/parameter_utils.dart'
+    - 'src/utils/docs_parser/**'
+
     # Flutter
     - 'lib/generated_plugin_registrant.dart'
 
@@ -87,7 +108,7 @@ custom_lint:
     - number_of_parameters:
       max_parameters: 7
       exclude:
-        - method_name: copyWith 
+        - method_name: copyWith
 
     - prefer_conditional_expressions:
       ignore_nested: true

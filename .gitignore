@@ -15,3 +15,6 @@ pubspec.lock
 
 # Logs from custom_lint package
 custom_lint.log
+
+# Local visual test playground
+/generated_test/
