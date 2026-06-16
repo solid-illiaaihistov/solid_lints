@@ -17,10 +17,71 @@ void main() {
     playgroundDir.createSync(recursive: true);
   }
 
+  // Create mock_flutter package
+  final mockFlutterDir = Directory(p.join(playgroundDir.path, 'mock_flutter'));
+  mockFlutterDir.createSync(recursive: true);
+
+  File(p.join(mockFlutterDir.path, 'pubspec.yaml')).writeAsStringSync('''
+name: flutter
+version: 1.0.0
+environment:
+  sdk: ">=3.9.0 <4.0.0"
+''');
+
+  final mockFlutterLibDir = Directory(p.join(mockFlutterDir.path, 'lib'));
+  mockFlutterLibDir.createSync(recursive: true);
+
+  File(p.join(mockFlutterLibDir.path, 'foundation.dart')).writeAsStringSync('''
+const bool kReleaseMode = false;
+const bool kDebugMode = true;
+void debugPrint(String? message, {int? wrapWidth}) {}
+''');
+
+  File(p.join(mockFlutterLibDir.path, 'material.dart')).writeAsStringSync('''
+export 'package:flutter/foundation.dart';
+export 'package:flutter/src/widgets/framework.dart';
+''');
+
+  File(p.join(mockFlutterLibDir.path, 'cupertino.dart')).writeAsStringSync('''
+export 'package:flutter/foundation.dart';
+''');
+
+  final mockFlutterSrcDir = Directory(p.join(mockFlutterLibDir.path, 'src', 'widgets'));
+  mockFlutterSrcDir.createSync(recursive: true);
+
+  File(p.join(mockFlutterSrcDir.path, 'framework.dart')).writeAsStringSync('''
+abstract class Widget {}
+
+abstract class StatefulWidget extends Widget {}
+
+class BuildContext {}
+
+abstract class State<T extends StatefulWidget> {
+  void initState() {}
+  void didUpdateWidget(T oldWidget) {}
+  void dispose() {}
+  void setState(void Function() fn) {
+    fn();
+  }
+}
+
+class Text extends Widget {
+  final Object? data;
+  Text(this.data);
+}
+
+class ElevatedButton extends Widget {
+  final Function()? onPressed;
+  final Function()? onLongPress;
+  final Widget? child;
+
+  ElevatedButton({this.onPressed, this.onLongPress, this.child});
+}
+''');
+
   // Generate pubspec.yaml for the playground package
   final pubspecFile = File(p.join(playgroundDir.path, 'pubspec.yaml'));
-  if (!pubspecFile.existsSync()) {
-    pubspecFile.writeAsStringSync('''
+  pubspecFile.writeAsStringSync('''
 name: generated_test
 description: A playground package for visual verification of solid_lints rules
 publish_to: none
@@ -30,13 +91,12 @@ environment:
 
 dependencies:
   flutter:
-    sdk: flutter
+    path: ./mock_flutter
 
 dev_dependencies:
   solid_lints:
     path: ../
 ''');
-  }
 
   // Find all test files ending with _test.dart recursively under test/
   final testFiles = testDir

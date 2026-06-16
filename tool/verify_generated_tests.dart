@@ -67,9 +67,6 @@ void main() async {
   }
 
   for (final ruleName in filesByRule.keys.toList()..sort()) {
-    if (ruleName == 'avoid_debug_print_in_release') {
-      continue;
-    }
     final files = filesByRule[ruleName]!;
 
     for (final file in files) {
