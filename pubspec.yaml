@@ -28,7 +28,6 @@ dev_dependencies:
   args: ^2.6.0
   analyzer_testing: ^0.1.9
   test_reflective_loader: ^0.3.0
-  hooks: ^2.1.0
 
 plugin:
   platforms:
