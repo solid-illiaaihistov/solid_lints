@@ -34,3 +34,4 @@ plugin:
   platforms:
     dart:
       pluginClass: SolidLintsPlugin
+      fileName: main.dart
