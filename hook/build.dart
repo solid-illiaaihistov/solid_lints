@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:hooks/hooks.dart';
 import 'package:yaml/yaml.dart';
 
 /// Native Assets build hook that runs automatically during `flutter run`,
@@ -10,14 +11,16 @@ import 'package:yaml/yaml.dart';
 ///
 /// Re-signs cached `plugin.aot` snapshots belonging to `solid_lints`
 /// with an ad-hoc signature ONLY if they are still linker-signed.
-void main(List<String> args) async {
-  if (!Platform.isMacOS) return;
+void main(List<String> arguments) async {
+  // Uses the official hooks protocol — correctly handles input/output.json
+  // serialization and remains compatible across Dart SDK versions.
+  await build(arguments, (input, output) async {
+    if (!Platform.isMacOS) return;
 
-  try {
+    // Path used by Analysis Server to cache compiled plugin AOT binaries.
     final home = Platform.environment['HOME'];
     if (home == null) return;
 
-    // Path used by Analysis Server to cache compiled plugin AOT binaries.
     final pluginDir = Directory('$home/.dartServer/.plugin_manager');
     if (!await pluginDir.exists()) return;
 
@@ -31,9 +34,7 @@ void main(List<String> args) async {
 
     // eagerError: false ensures all files are processed even if one fails.
     await Future.wait(processingTasks, eagerError: false);
-  } catch (_) {
-    // Fail silently to never interrupt the developer's workflow.
-  }
+  });
 }
 
 abstract final class _AotSigner {
@@ -80,6 +81,7 @@ abstract final class _AotSigner {
             if (yamlDoc is Map && yamlDoc['name'] == _packageName) return true;
           } catch (_) {
             // Fallback if YAML parsing fails (e.g. syntax error in pubspec).
+            // Uses a regex to avoid false positives like `solid_lints_extension`.
             if (RegExp(
               r'^name:\s+solid_lints\s*$',
               multiLine: true,
