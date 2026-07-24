@@ -560,9 +560,7 @@ solid_lints:
       _TestWorkspacePackage(rootFolder),
       definingUnit:
           definingUnit ??
-          _TestRuleContextUnit(
-            rootFolder.getChildAssumingFile('lib/dummy.dart'),
-          ),
+          _TestRuleContextUnit(rootFolder.getFile('lib/dummy.dart')),
     );
   }
 }

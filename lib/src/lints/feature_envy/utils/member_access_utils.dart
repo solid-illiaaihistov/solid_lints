@@ -15,7 +15,9 @@ abstract final class MemberAccessUtils {
 
     final baseElement = switch (target.unwrapTarget) {
       ExtensionOverride(:final argumentList) =>
-        argumentList.arguments.firstOrNull?.staticType?.element,
+        (argumentList.arguments.firstOrNull as Expression?)
+            ?.staticType
+            ?.element,
       final expr => expr?.staticType?.element,
     };
 
@@ -37,7 +39,9 @@ abstract final class MemberAccessUtils {
       (target != null || !isPatternField) &&
       switch (target?.unwrapTarget) {
         ExtensionOverride(:final argumentList) =>
-          argumentList.arguments.firstOrNull?.unwrapTarget.isThisOrSuper ??
+          (argumentList.arguments.firstOrNull as Expression?)
+                  ?.unwrapTarget
+                  .isThisOrSuper ??
               false,
         final expr => expr.isThisOrSuperOrNull,
       };

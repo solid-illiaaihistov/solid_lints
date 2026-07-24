@@ -48,7 +48,7 @@ extension SimpleIdentifierExtension on SimpleIdentifier {
   /// Returns `true` if this identifier refers to a variable declared inside
   /// the body of the function that owns [as] (i.e. a local variable in the
   /// same scope).
-  bool isDeclaredInSameFunction({required SimpleFormalParameter as}) {
+  bool isDeclaredInSameFunction({required FormalParameter as}) {
     final element = this.element;
     if (element is! LocalVariableElement) return false;
 
@@ -86,7 +86,10 @@ extension AstNodeExtension on AstNode {
   /// Returns `true` if the node is within the default value of a formal
   /// parameter.
   bool get isDefaultValue =>
-      thisOrAncestorOfType<DefaultFormalParameter>() != null;
+      thisOrAncestorMatching(
+        (node) => node.runtimeType.toString().contains('DefaultClause'),
+      ) !=
+      null;
 
   /// Returns `true` if the node is within a constructor initializer.
   bool get isInConstructorInitializer =>
@@ -162,7 +165,7 @@ extension ArgumentListExtension on ArgumentList {
   /// Returns `true` if this argument list contains a named parameter argument
   /// with the given [name].
   bool containsNamed(String name) => arguments.any(
-    (arg) => arg is NamedExpression && arg.name.label.name == name,
+    (arg) => arg is NamedArgument && arg.name.lexeme == name,
   );
 }
 

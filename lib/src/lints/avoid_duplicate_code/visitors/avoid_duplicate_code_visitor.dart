@@ -287,7 +287,7 @@ class AvoidDuplicateCodeVisitor extends RecursiveAstVisitor<void> {
     return _packageRootCache.putIfAbsent(dirPath, () {
       var dir = _resourceProvider.getFolder(dirPath);
       while (true) {
-        final pubspec = dir.getChildAssumingFile('pubspec.yaml');
+        final pubspec = dir.getFile('pubspec.yaml');
         if (pubspec.exists) {
           return dir.path;
         }

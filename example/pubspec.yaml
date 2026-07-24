@@ -13,3 +13,6 @@ dev_dependencies:
   solid_lints:
     path: ../
   test: ^1.25.14
+
+dependency_overrides:
+  meta: 1.18.0
