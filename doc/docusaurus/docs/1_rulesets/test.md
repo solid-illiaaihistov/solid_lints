@@ -1,6 +1,7 @@
 ---
 sidebar_label: Test
 sidebar_position: 2
+description: Static analysis for autotests.
 ---
 
 # Test

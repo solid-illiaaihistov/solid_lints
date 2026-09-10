@@ -1,6 +1,7 @@
 ---
 sidebar_label: Main
 sidebar_position: 1
+description: Static analysis for application code.
 ---
 
 # Main
