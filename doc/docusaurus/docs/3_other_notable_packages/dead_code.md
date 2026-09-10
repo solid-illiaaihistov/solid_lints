@@ -14,14 +14,14 @@ forgotten APIs, and dead code across Dart and Flutter codebases.
 [![pub package](https://img.shields.io/pub/v/ciach.svg)](https://pub.dev/packages/ciach)
 
 A command-line tool acting as a wrapper around the **Dart Analysis Server**.
-It queries the analysis server for explicit references to every declaration in
+It queries the analysis server for explicit references to declarations in
 the project.
 
 `ciach` excels at deep codebase cleanup, inspecting internal class members,
 methods, constructors, extensions, and fields.
 
 - **Links**: [pub.dev](https://pub.dev/packages/ciach) ·
-  [GitHub](https://github.com/maksimr/ciach)
+  [GitHub](https://github.com/leancodepl/ciach)
 
 ---
 
@@ -47,7 +47,7 @@ identifying unused top-level declarations, classes, functions, and variables.
 | :--- | :--- | :--- |
 | **Detection Engine** | Queries the **Dart Analysis Server** for explicit references to declarations. | Parses AST and builds a **reachability graph** from known entrypoints. |
 | **Analysis Depth** | **Deep:** Scans inside classes, including methods, constructors, extensions, and fields. | **Top-level:** Only identifies unused top-level declarations, classes, functions, and global variables. |
-| **Test Handling** | Scans the entire workspace including `test/`. May flag reflection-invoked tests as dead code (requires `-e 'test/**'` exclusions). | Ignores `test/` by default in library mode. Focuses primarily on public API reachability. |
+| **Test Handling** | Scans the included workspace files, including `test/` unless excluded. May flag reflection-invoked tests as dead code. | Recognizes package test suites and test-runner entrypoints; library mode uses public `lib/**` exports as reachability roots. |
 | **Suppressions / Ignores** | ❌ **No inline comments.** (Requires CLI exclusions like `-e 'file'` or `@pragma`) | ✅ **Granular inline comments.** (Via `// undead:ignore` & `_for_file`) |
 | **Auto-Removal** | ✅ **Supported** (via `--remove` flag) | ❌ **Analysis only** |
 
